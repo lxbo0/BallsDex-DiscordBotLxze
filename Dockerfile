@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1.7-labs
 
 # Base image
-FROM python:3.14.0-alpine3.22 AS base
+FROM python:3.11-alpine AS base
 
 # Environment variables
 ENV PYTHONFAULTHANDLER=1 \
