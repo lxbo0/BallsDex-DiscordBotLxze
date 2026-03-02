@@ -7,4 +7,4 @@ Pillow
 uvicorn
 psycopg2-binary
 python-dotenv
-admin_auto_filters
+django-admin-auto-filters>=2.0.0
