@@ -47,7 +47,7 @@ WORKDIR /code/admin_panel
 # Create log directory and empty log file with correct ownership
 RUN mkdir -p /code/admin_panel/admin_panel.settings && \
     touch /code/admin_panel/admin_panel.settings/ballsdex.log && \
-    chown -R ballsdex:ballsDex /code/admin_panel/admin_panel.settings
+    chown -R ballsdex:ballsdex /code/admin_panel/admin_panel.settings
 
 # Switch to ballsdex user
 USER ballsdex
