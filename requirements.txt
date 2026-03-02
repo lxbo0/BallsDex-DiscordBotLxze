@@ -7,3 +7,4 @@ Pillow
 uvicorn
 psycopg2-binary
 python-dotenv
+admin_auto_filters
