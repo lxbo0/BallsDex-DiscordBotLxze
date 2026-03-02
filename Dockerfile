@@ -49,8 +49,23 @@ COPY --from=builder-base /code /code
 WORKDIR /code/admin_panel
 USER ballsdex
 
+FROM python:3.14.0-alpine3.22 AS production
+
+# Install system dependencies for Pillow etc.
+RUN apk add --no-cache tiff-dev jpeg-dev zlib-dev freetype-dev lcms2-dev libwebp-dev tcl-dev tk-dev harfbuzz-dev fribidi-dev libimagequant-dev libxcb-dev libpng-dev libavif-dev
+
+# Copy your code
+COPY . /code
+WORKDIR /code/admin_panel
+
+# Install Python packages system-wide
+RUN pip install --upgrade pip && pip install -r /code/requirements.txt
+
 # Make Python see /code as a module path
 ENV PYTHONPATH=/code:$PYTHONPATH
+
+# Run as ballsdex user
+USER ballsdex
 
 # Start the bot
 CMD ["python3", "-m", "ballsdex"]
