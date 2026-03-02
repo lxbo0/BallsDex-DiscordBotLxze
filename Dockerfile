@@ -41,15 +41,17 @@ RUN ls -l
 # Install Python dependencies system-wide
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
-# Switch working directory to admin_panel for runtime
+# Set working directory
 WORKDIR /code/admin_panel
 
-# Create log directory for Ballsdex
+# Create log directory and empty log file with correct ownership
 RUN mkdir -p /code/admin_panel/admin_panel.settings && \
-    touch /code/admin_panel/admin_panel.settings/ballsdex.log
+    touch /code/admin_panel/admin_panel.settings/ballsdex.log && \
+    chown -R ballsdex:ballsDex /code/admin_panel/admin_panel.settings
 
-# Run as ballsdex user
+# Switch to ballsdex user
 USER ballsdex
 
 # Start the bot
 CMD ["python3", "-m", "ballsdex"]
+
