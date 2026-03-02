@@ -16,7 +16,7 @@ ENV PYTHONFAULTHANDLER=1 \
     DJANGO_SETTINGS_MODULE=admin_panel.settings \
     PYTHONPATH=/code:$PYTHONPATH
 
-# Install system dependencies for Pillow, PostgreSQL, etc.
+# System dependencies for Pillow, PostgreSQL, etc.
 RUN apk add --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community libraqm-dev && \
     apk add --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/edge/main postgresql18-client && \
     apk add --no-cache tiff-dev jpeg-dev openjpeg-dev zlib-dev freetype-dev \
@@ -29,19 +29,19 @@ ARG GID=1000
 RUN addgroup -S ballsdex -g ${GID} && adduser -S ballsdex -G ballsdex -u ${UID} && \
     mkdir -p ${BALLSDEX_LOG_DIR} && chown ballsdex:ballsdex ${BALLSDEX_LOG_DIR}
 
-# Copy the entire repo
+# Copy the full repo
 COPY . /code
 
-# Set working directory to repo root to install dependencies
+# Set working directory to repo root for pip install
 WORKDIR /code
 
-# Ensure requirements.txt exists
-RUN ls -l /code
+# Debug: list files to make sure requirements.txt exists
+RUN ls -l
 
 # Install Python dependencies system-wide
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
-# Switch to admin_panel for runtime
+# Switch working directory to admin_panel for runtime
 WORKDIR /code/admin_panel
 
 # Run as ballsdex user
