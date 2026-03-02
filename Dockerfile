@@ -48,3 +48,5 @@ FROM base AS production
 WORKDIR /code/admin_panel
 USER ballsdex
 CMD ["python3", "-m", "ballsdex"]
+COPY . /code
+RUN pip install --upgrade pip && pip install .
