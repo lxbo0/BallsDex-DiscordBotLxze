@@ -1,0 +1,7 @@
+django>=4.2
+requests
+aiohttp
+Pillow
+uvicorn
+psycopg2-binary
+# Add any other packages your bot requires
