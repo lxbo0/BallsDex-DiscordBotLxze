@@ -15,7 +15,7 @@ services:
   bot:
     restart: "no"
     image: ballsdex
-    build: --mount=type=cache,id=pip-cache,target=/root/.cache/pip
+    build: .
     environment:
       - *postgres-url
       - *django-settings
