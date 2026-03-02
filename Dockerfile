@@ -44,6 +44,10 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 # Switch working directory to admin_panel for runtime
 WORKDIR /code/admin_panel
 
+# Create log directory for Ballsdex
+RUN mkdir -p /code/admin_panel/admin_panel.settings && \
+    touch /code/admin_panel/admin_panel.settings/ballsdex.log
+
 # Run as ballsdex user
 USER ballsdex
 
