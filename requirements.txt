@@ -1,7 +1,8 @@
 django>=4.2
+dj-database-url
 requests
 aiohttp
 Pillow
 uvicorn
 psycopg2-binary
-# Add any other packages your bot requires
+python-dotenv
