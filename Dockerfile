@@ -8,10 +8,8 @@ ENV PYTHONFAULTHANDLER=1 \
     PYTHONHASHSEED=random \
     PIP_DISABLE_PIP_VERSION_CHECK=on \
     PIP_DEFAULT_TIMEOUT=100 \
-    PATH="/opt/venv/bin:$PATH" \
     UV_COMPILE_BYTECODE=1 \
     UV_LINK_MODE=copy \
-    VIRTUAL_ENV=/opt/venv \
     BALLSDEX_LOG_DIR=/var/log/ballsdex \
     BALLSDEXBOT_EXTRA_TOML=/code/admin_panel/config/extra.toml \
     STATIC_ROOT=/var/www/ballsdex/static \
@@ -47,6 +45,5 @@ FROM nginx:1.29.3-alpine3.22 AS proxy
 COPY --from=builder-base /var/www/ballsdex/static /var/www/ballsdex/static
 
 FROM base AS production
-COPY --from=builder-base /opt/venv /opt/venv
 WORKDIR /code/admin_panel
 USER ballsdex
