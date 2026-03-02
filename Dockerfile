@@ -19,29 +19,34 @@ RUN apk add --no-cache --repository=https://dl-cdn.alpinelinux.org/alpine/edge/c
     apk add --no-cache tiff-dev jpeg-dev openjpeg-dev zlib-dev freetype-dev \
     lcms2-dev libwebp-dev tcl-dev tk-dev harfbuzz-dev fribidi-dev \
     libimagequant-dev libxcb-dev libpng-dev libavif-dev git build-base
+    
+# System dependencies
+RUN apk add --no-cache tiff-dev jpeg-dev zlib-dev freetype-dev \
+    lcms2-dev libwebp-dev tcl-dev tk-dev harfbuzz-dev fribidi-dev \
+    libimagequant-dev libxcb-dev libpng-dev libavif-dev git build-base postgresql18-client
 
-# Create ballsdex user and log directory
+# Create ballsdex user
 ARG UID GID
-RUN addgroup -S ballsdex -g ${GID:-1000} && \
-    adduser -S ballsdex -G ballsdex -u ${UID:-1000} && \
-    mkdir -p -m 770 ${BALLSDEX_LOG_DIR} && chown ballsdex:ballsdex ${BALLSDEX_LOG_DIR}
+RUN addgroup -S ballsdex -g ${GID:-1000} && adduser -S ballsdex -G ballsdex -u ${UID:-1000}
 
-WORKDIR /code
-
-# Copy your repo
+# Copy all repo
 COPY . /code
+
+# Set working directory to repo root to install dependencies
+WORKDIR /code
 
 # Install Python dependencies system-wide
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
-# Ensure Python can find your ballsdex package
+# Make Python see ballsdex module
 ENV PYTHONPATH=/code:$PYTHONPATH
 
-# Set working directory for admin panel
+# Switch to admin_panel for runtime
 WORKDIR /code/admin_panel
 
 # Run as ballsdex user
 USER ballsdex
 
-# Start the bot automatically
+# Start the bot
 CMD ["python3", "-m", "ballsdex"]
+
