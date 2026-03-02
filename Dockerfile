@@ -47,3 +47,4 @@ COPY --from=builder-base /var/www/ballsdex/static /var/www/ballsdex/static
 FROM base AS production
 WORKDIR /code/admin_panel
 USER ballsdex
+CMD ["python3", "-m", "ballsdex"]
