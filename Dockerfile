@@ -45,8 +45,12 @@ FROM nginx:1.29.3-alpine3.22 AS proxy
 COPY --from=builder-base /var/www/ballsdex/static /var/www/ballsdex/static
 
 FROM base AS production
+COPY --from=builder-base /code /code
 WORKDIR /code/admin_panel
 USER ballsdex
+
+# Make Python see /code as a module path
+ENV PYTHONPATH=/code:$PYTHONPATH
+
+# Start the bot
 CMD ["python3", "-m", "ballsdex"]
-COPY . /code
-RUN pip install --upgrade pip && pip install .
