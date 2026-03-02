@@ -52,14 +52,16 @@ USER ballsdex
 FROM python:3.14.0-alpine3.22 AS production
 
 # Install system dependencies for Pillow etc.
-RUN apk add --no-cache tiff-dev jpeg-dev zlib-dev freetype-dev lcms2-dev libwebp-dev tcl-dev tk-dev harfbuzz-dev fribidi-dev libimagequant-dev libxcb-dev libpng-dev libavif-dev
+RUN apk add --no-cache tiff-dev jpeg-dev zlib-dev freetype-dev \
+    lcms2-dev libwebp-dev tcl-dev tk-dev harfbuzz-dev fribidi-dev \
+    libimagequant-dev libxcb-dev libpng-dev libavif-dev
 
-# Copy your code
+# Copy **entire repo** into /code
 COPY . /code
-WORKDIR /code/admin_panel
+WORKDIR /code
 
-# Install Python packages system-wide
-RUN pip install --upgrade pip && pip install -r /code/requirements.txt
+# Install Python dependencies system-wide
+RUN pip install --upgrade pip && pip install -r requirements.txt
 
 # Make Python see /code as a module path
 ENV PYTHONPATH=/code:$PYTHONPATH
@@ -69,3 +71,4 @@ USER ballsdex
 
 # Start the bot
 CMD ["python3", "-m", "ballsdex"]
+
