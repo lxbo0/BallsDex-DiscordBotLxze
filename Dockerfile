@@ -38,17 +38,17 @@ RUN apk add --no-cache gcc libc-dev git
 
 COPY --from=ghcr.io/astral-sh/uv:0.7.3 /uv /uvx /bin/
 COPY uv.lock pyproject.toml /code/
-RUN --mount=type=cache,id=cachepip,target=/root/.cache/pip pip install -r requirements.txt
+RUN --mount=type=cache,id=cache-pip,target=/root/.cache/pip pip install -r requirements.txt \
     uv venv $VIRTUAL_ENV && \
     uv sync --locked --no-install-project --no-editable --active
 COPY --parents admin_panel ballsdex LICENSE README.md /code/
-RUN --mount=type=cache,id=cachepip,target=/root/.cache/pip pip install -r requirements.txt
+RUN --mount=type=cache,id=cache-pip,target=/root/.cache/pip pip install -r requirements.txt \
     uv sync --locked --no-editable --active --reinstall-package ballsdex && \
     cd admin_panel && django-admin collectstatic --no-input
 
 # this is running in a separate layer to allow bots with different extra packages to run on the same base layer
 COPY --parents bdextra.py config/extra.toml extra /code/
-RUN --mount=type=cache,id=cachepip,target=/root/.cache/pip pip install -r requirements.txt
+RUN --mount=type=cache,id=cache-pip,target=/root/.cache/pip pip install -r requirements.txt \
     if [ -f config/extra.toml ]; then uv pip install --reinstall $(python3 bdextra.py config/extra.toml); fi
 
 FROM nginx:1.29.3-alpine3.22 AS proxy
